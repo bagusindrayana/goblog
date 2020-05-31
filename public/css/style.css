@@ -1,0 +1,7 @@
+.card-img-top {
+    vertical-align: middle;
+    object-fit: cover;
+    object-position: center;
+    height: 300px;
+    max-width: 750px;
+}
