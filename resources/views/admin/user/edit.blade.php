@@ -1,23 +1,24 @@
 @extends('admin.layouts.app')
 
-@section('title','Add Tag')
+@section('title','Edit User')
 
 @section('breadcrumb')
     <li class="breadcrumb-item">
-        <a href="{{ route('admin.tag.index') }}">Tag</a>
+        <a href="{{ route('admin.user.index') }}">User</a>
     </li>
-    <li class="breadcrumb-item active">Add Tag</li>
+    <li class="breadcrumb-item active">Edit User</li>
 @endsection
 
 @section('content')
 
 
-<form action="{{ route('admin.tag.store') }}" class="form" method="POST">
+<form action="{{ route('admin.user.update',$data->id) }}" class="form" method="POST">
     @csrf
+    <input type="hidden" name="_method" value="PUT">
     <div class="card">
         <div class="card-header">
             <div class="float-left">
-                <b>Add Tag</b>
+                <b>Edit User</b>
             </div>
             <div class="float-right">
                 
@@ -30,8 +31,14 @@
             
                 <div class="form-group">
                     <label for="name">Name</label>
-                    <input type="text" class="form-control" name="name" id="name" required placeholder="Name" value="{{ old('name') }}">
+                    <input type="text" class="form-control" name="name" id="name" required placeholder="Name" value="{{ old('name',@$data->name) }}">
                 </div>
+
+                <div class="form-group">
+                    <label for="name">Email</label>
+                    <input type="email" class="form-control" name="email" id="email" required placeholder="Email" value="{{ old('email',@$data->email) }}">
+                </div>
+
               
 
                 <div class="form-group">

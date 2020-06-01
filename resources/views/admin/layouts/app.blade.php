@@ -73,7 +73,11 @@
                                     <a class="nav-link" href="{{ route('admin.tag.index') }}">Tag</a>
                                 </nav>
                             </div>
-                            
+                            <div class="sb-sidenav-menu-heading">Setting</div>
+                            <a class="nav-link" href="{{ route('admin.user.index') }}">
+                                <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
+                                User
+                            </a>
                         </div>
                     </div>
                     <div class="sb-sidenav-footer">

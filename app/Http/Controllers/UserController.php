@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\Helper;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -13,8 +15,10 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
-        //
+    {   
+        $s = request()->s ?? "";
+        $datas = User::where('name','LIKE','%'.$s.'%')->paginate(10);
+        return view('admin.user.index',compact('datas'));
     }
 
     /**
@@ -24,7 +28,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.user.create');
     }
 
     /**
@@ -35,7 +39,19 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name'=>'required|string|max:100',
+            'email'=>'required|string|max:100|unique:users',
+            'password'=>'required|string|max:100|min:8'
+        ]);
+
+        $user = User::create([
+            'name'=>$request->name,
+            'email'=>$request->email,
+            'password'=>Hash::make($request->password),
+        ]);
+
+        return redirect(route('admin.user.index'))->with(['success'=>"Add New User with name ".$user->name]);
     }
 
     /**
@@ -56,8 +72,9 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit(User $user)
-    {
-        //
+    {   
+        $data = $user;
+        return view('admin.user.edit',compact('data'));
     }
 
     /**
@@ -69,7 +86,16 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        //
+        $request->validate([
+            'name'=>'required|string|max:100|min:1'
+        ]);
+
+        $user->update([
+            'name'=>$request->name,
+            'email'=>$request->email,
+        ]);
+
+        return redirect(route('admin.user.index'))->with(['success'=>"Update User with name ".$user->name]);
     }
 
     /**
@@ -79,7 +105,8 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function destroy(User $user)
-    {
-        //
+    {   
+        $user->delete();
+        return redirect(route('admin.user.index'))->with(['success'=>"Delete User with name ".$user->name]);
     }
 }

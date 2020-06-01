@@ -25,6 +25,7 @@ Route::group(['prefix'=>'admin','as'=>'admin.'], function(){
         Route::resource('/post', 'PostController');
         Route::resource('/category', 'CategoryController');
         Route::resource('/tag', 'TagController');
+        Route::resource('/user', 'UserController');
     });
 });
 
