@@ -149,7 +149,8 @@ class PostController extends Controller
             ];
         }
         $tags = Tag::pluck('name');
-        return view('admin.post.edit',compact('categories','tags','post'));
+        $fullscreen = true;
+        return view('admin.post.edit',compact('categories','tags','post','fullscreen'));
     }
 
     /**
@@ -161,16 +162,22 @@ class PostController extends Controller
      */
     public function update(Request $request, Post $post)
     {   
-        dd($request->all());
+       
         $request->validate([
             'title'=>'required|string|min:6|max:191',
             'content'=>'required|string|min:6',
             'slug'=>'required|string|min:1'
         ]);
+        $slug = $request->slug;
+        if($request->slug != $post->slug){
+            $slug = Helper::makeSlug($request->slug,Post::select('id'));
+        }
         $post->update([
             'title'=>$request->title,
             'content'=>$request->content,
-            'slug'=>$request->slug
+            'slug'=>$slug,
+            'featured_image'=>$request->featured_image,
+            'status'=>$request->status
         ]);
         
         $tag_id = [];
@@ -191,7 +198,7 @@ class PostController extends Controller
         }
         $post->Categories()->sync($category_id);
         
-        dd($post->Categories);
+        return redirect(route('admin.post.index'))->with(['success'=>"Update post with title : ".$post->title]);
     }
 
     /**

@@ -493,6 +493,7 @@ class TagSetting {
 //featured image
 class FeaturedImageSetting{
     constructor(newUrl = null){
+     
         this.imgUrl = newUrl;
         this.registerComponent()
         this.renderHiddenElemen()
@@ -555,8 +556,11 @@ class FeaturedImageSetting{
                                 <i className="fa fa-picture-o"></i> Choose
                                 </a>
                             </span>
-                            <input id="featured_image" className="form-control" type="text" value={this.imgUrl}/>
-                            <img id="holder" src={this.imgUrl}/>
+                            <input id="featured_image" className="form-control" type="text" value={_this.imgUrl}/>
+                            <img id="holder" src={_this.imgUrl} onChange={(e) => {
+                                    console.log(e)
+                                }
+                            }/>
                         </div>
                         
                     </div>

@@ -12,7 +12,7 @@
         <h2 class="card-title">{{ $post->title }}</h2>
         <p class="card-text">{!! strip_tags($post->min_content) !!}</p>
         <br>
-        <a href="{{ url($post->link) }}" class="btn btn-primary mt-4">Read More &rarr;</a>
+        <a href="{{ url($post->link) }}" class="btn btn-primary ">Read More &rarr;</a>
       </div>
       <div class="card-footer text-muted">
         Posted on {{ $post->created_at->format('F d,Y') }} by

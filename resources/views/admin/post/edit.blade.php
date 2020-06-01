@@ -1,7 +1,5 @@
 @extends('admin.layouts.app')
 
-@section('content')
-
 @push('styles')
 
     <link rel="stylesheet" href="{{asset('vendor/laraberg/css/laraberg.css')}}">
@@ -21,53 +19,59 @@
     </style>
 @endpush
 
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-header">
-                    <div class="float-left">
-                        <b>Add Post</b>
-                    </div>
-                    <div class="float-right">
-                        <button class="btn btn-light">
-                            Save Draft
-                        </button>
-                        <button class="btn btn-success">
-                            Publish
-                        </button>
-                    </div>
+@section('title','Edit Post')
+
+@section('breadcrumb')
+    <li class="breadcrumb-item"><a href="{{ route('admin.post.index') }}">Post</a></li>
+    <li class="breadcrumb-item active">Edit Post</li>
+@endsection
+
+@section('content')
+
+<div class="card">
+    <div class="card-header">
+        <div class="float-left">
+            <b>Edit Post</b>
+        </div>
+        <div class="float-right">
+            <button class="btn btn-light" name="status" type="submit" value="Draft">
+                Save Draft
+            </button>
+            <button class="btn btn-success" name="status" type="submit" value="Publish">
+                Publish
+            </button>
+        </div>
+        
+    </div>
+
+    <div class="card-body">
+        
+        <form action="{{ route('admin.post.update',$post->id) }}" class="form" method="POST">
+            @csrf
+            <input type="hidden" name="_method" value="PUT">
+            <div class="form-group">
+                <label for="title">Title</label>
+                <input type="text" class="form-control" name="title" id="title" required placeholder="Title" value="{{ old('title',@$post->title) }}">
+            </div>
+            <div class="form-group">
+                <label for="content">Content</label>
+                <textarea id="content" name="content" hidden>{{$post->content}}</textarea>
+                <div style="display: none" id="list-input-setting">
                     
-                </div>
-
-                <div class="card-body">
-                    
-                    <form action="{{ route('admin.post.update',$post->id) }}" class="form" method="POST">
-                        @csrf
-                        <input type="hidden" name="_method" value="PUT">
-                        <div class="form-group">
-                            <label for="title">Title</label>
-                            <input type="text" class="form-control" name="title" id="title" required placeholder="Title" value="{{ old('title',@$post->title) }}">
-                        </div>
-                        <div class="form-group">
-                            <label for="content">Content</label>
-                            <textarea id="content" name="content" hidden>{{$post->content}}</textarea>
-                            <div style="display: none" id="list-input-setting">
-                                
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <button class="btn btn-success">
-                                Publish
-                            </button>
-                        </div>
-
-              
-                    </form>
                 </div>
             </div>
-        </div>
+
+            <div class="form-group">
+                <button class="btn btn-light" name="status" type="submit" value="Draft">
+                    Save Draft
+                </button>
+                <button class="btn btn-success" name="status" type="submit" value="Publish">
+                    Publish
+                </button>
+            </div>
+
+  
+        </form>
     </div>
 </div>
 @endsection
@@ -119,10 +123,10 @@
             })
 
             setTimeout(function(){
-                const pm = new PermalinkSetting(`{{ old("slug") }}`)
+                const pm = new PermalinkSetting("{{ old('slug',$post->slug) }}")
                 const ct = new CategorySetting({!! json_encode($categories) !!},{!! json_encode(old('category',[])) !!})
-                const tg = new TagSetting({!! json_encode($tags) !!},{!! json_encode(old('tags',[])) !!})
-                const fi = new FeaturedImageSetting(`{{ old("featured_image") }}`)
+                const tg = new TagSetting({!! json_encode($tags) !!},{!! json_encode(old('tags',$post->Tags()->pluck('name'))) !!})
+                const fi = new FeaturedImageSetting("{{ old('featured_image',$post->featured_image) }}")
             },2000)
             
         })
