@@ -1,5 +1,5 @@
 @extends('admin.layouts.app')
-@section('title','Tag')
+
 
 @section('breadcrumb')
     <li class="breadcrumb-item active">Tag</li>

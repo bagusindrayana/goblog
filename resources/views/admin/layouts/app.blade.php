@@ -106,10 +106,8 @@
                                 {{ $message }}
                             </div>
                         @endif
-                        <h1 class="mt-4">
-                            @yield('title','Dashboard')
-                        </h1>
-                        <ol class="breadcrumb mb-4">
+                        
+                        <ol class="breadcrumb mb-4 mt-4">
                             <li class="breadcrumb-item"><a href="{{ route('admin.home') }}">Dashboard</a></li>
                             @yield('breadcrumb')
                         </ol>

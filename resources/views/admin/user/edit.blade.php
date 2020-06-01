@@ -1,7 +1,5 @@
 @extends('admin.layouts.app')
 
-@section('title','Edit User')
-
 @section('breadcrumb')
     <li class="breadcrumb-item">
         <a href="{{ route('admin.user.index') }}">User</a>

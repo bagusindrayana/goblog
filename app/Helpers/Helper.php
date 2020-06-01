@@ -37,7 +37,7 @@ class Helper {
     public static function postList($paginate = true,$limit = 5,$search = null,$where = null)
     {   
         $s = request()->s ?? ($search ?? "");
-        $posts = Post::orderBy('created_at','DESC')->where(function($q)use($s){
+        $posts = Post::orderBy('created_at','DESC')->where('status','Publish')->where(function($q)use($s){
             $q->where('title','LIKE','%'.$s.'%')->orWhere('content','LIKE','%'.$s.'%');
         });
 

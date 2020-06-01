@@ -1,6 +1,5 @@
 @extends('admin.layouts.app')
 
-@section('title','Edit Tag')
 
 @section('breadcrumb')
     <li class="breadcrumb-item">

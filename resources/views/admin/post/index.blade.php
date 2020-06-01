@@ -1,5 +1,5 @@
 @extends('admin.layouts.app')
-@section('title','Post')
+
 
 @section('breadcrumb')
     <li class="breadcrumb-item active">Post</li>
@@ -30,6 +30,9 @@
                         Title
                     </th>
                     <th>
+                        Status
+                    </th>
+                    <th>
                         Action
                     </th>
                 </tr>
@@ -39,6 +42,9 @@
                     <tr>
                         <td>
                             {{ $data->title }}
+                        </td>
+                        <td>
+                            {{ $data->status }}
                         </td>
                         <td>
                             <form action="{{ route('admin.post.destroy',$data->id) }}" method="POST">
@@ -57,7 +63,7 @@
             </tbody>
             <tfoot>
                 <tr>
-                    <td colspan="2">
+                    <td colspan="3">
                         {!! $datas->links() !!}
                     </td>
                 </tr>

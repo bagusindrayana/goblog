@@ -4,6 +4,11 @@
     <link rel="stylesheet" href="{{asset('vendor/laraberg/css/laraberg.css')}}">
 
     <style>
+        body {
+            height: auto !important;
+            overflow-y: scroll !important;
+        }
+
         /* for mobile */
         #laraberg__editor {
             height: 60vh !important;
@@ -19,7 +24,6 @@
   
 @endpush
 
-@section('title','Add Post')
 
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="{{ route('admin.post.index') }}">Post</a></li>
@@ -37,10 +41,10 @@
                 <p>Add Post</p>
             </div>
             <div class="float-right">
-                <button class="btn btn-light" name="status" type="submit" value="Draft">
+                <button class="btn btn-sm btn-light" name="status" type="submit" value="Draft">
                     Save Draft
                 </button>
-                <button class="btn btn-success" name="status" type="submit" value="Publish">
+                <button class="btn btn-sm btn-success" name="status" type="submit" value="Publish">
                     Publish
                 </button>
             </div>
@@ -54,7 +58,7 @@
                     {{-- <label for="title">Title</label> --}}
                     <input type="text" class="form-control" name="title" id="title" required placeholder="Title">
                 </div>
-                <div class="form-group" >
+                <div class="form-group mb-4" >
                     {{-- <label for="content">Content</label> --}}
                     <textarea id="content" name="content" hidden></textarea>
                     <div style="display: none" id="list-input-setting">
@@ -63,10 +67,10 @@
                 </div>
 
                 <div class="form-group">
-                    <button class="btn btn-light" name="status" type="submit" value="Draft">
+                    <button class="btn btn-sm btn-light" name="status" type="submit" value="Draft">
                         Save Draft
                     </button>
-                    <button class="btn btn-success" name="status" type="submit" value="Publish">
+                    <button class="btn btn-sm btn-success" name="status" type="submit" value="Publish">
                         Publish
                     </button>
                 </div>

@@ -19,7 +19,6 @@
     </style>
 @endpush
 
-@section('title','Edit Post')
 
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="{{ route('admin.post.index') }}">Post</a></li>
