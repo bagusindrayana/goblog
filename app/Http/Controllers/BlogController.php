@@ -34,9 +34,11 @@ class BlogController extends Controller
     {
         $category = Category::where('slug',$slug)->first();
 
-        $posts = Post::whereHas('Categories',function($q)use($category){
-            $q->where('Categories.id',$category->id);
-        })->paginate(10);
+        $posts = Helper::postList(true,5,request()->s,function($w)use($category){
+            $w->whereHas('Categories',function($q)use($category){
+                $q->where('Categories.id',$category->id);
+            });
+        });
         $title = "Category : ";
         $subTitle = $category->name;
         return view('welcome',compact('posts','title','subTitle'));
@@ -47,9 +49,11 @@ class BlogController extends Controller
     {
         $tag = Tag::where('slug',$slug)->first();
 
-        $posts = Post::whereHas('Tags',function($q)use($tag){
-            $q->where('Tags.id',$tag->id);
-        })->paginate(10);
+        $posts = Helper::postList(true,5,request()->s,function($w)use($tag){
+            $w->whereHas('Tags',function($q)use($tag){
+                $q->where('Tags.id',$tag->id);
+            });
+        });
         $title = "Tag : ";
         $subTitle = $tag->name;
         return view('welcome',compact('posts','title','subTitle'));

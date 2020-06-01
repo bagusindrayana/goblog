@@ -43,8 +43,6 @@ class ShowHide extends React.Component {
 class PermalinkSetting {
     constructor(newSlug = ""){
         this.currentUrlSlug = newSlug;
-        
-
         this.registerComponent()
         this.renderHiddenElemen()
     }
@@ -67,13 +65,16 @@ class PermalinkSetting {
         class SlugInput extends React.Component {
             constructor(props) {
                 super(props);
-                this.state = { value: _this.currentUrlSlug };
+                
                 var input = document.getElementById("title");
                 if(input){
-                    this.onChangeHandler(input.value)
+                    _this.currentUrlSlug = input.value
                 }
+                _this.renderHiddenElemen()
+                this.state = { value: _this.currentUrlSlug };
                 
             }
+            
 
             string_to_slug = (str) => {
                 str = str.replace(/^\s+|\s+$/g, ''); // trim
@@ -94,8 +95,8 @@ class PermalinkSetting {
             }
         
             onChangeHandler = (e) => {
-                this.setState({value: this.string_to_slug(e)});
                 _this.currentUrlSlug = this.string_to_slug(e)
+                this.setState({value: this.string_to_slug(e)});
                 _this.renderHiddenElemen()
             
             }
@@ -136,12 +137,15 @@ class PermalinkSetting {
 
 //category
 class CategorySetting {
-    constructor(newCat = []){
+    constructor(newCat = [],selectedCat = []){
         this.currentCategory = newCat;
-
+        this.selectedCat = selectedCat
         this.registerComponent()
         this.renderHiddenElemen()
+
+        
     }
+
 
     renderHiddenElemen = (subs = null) =>{
         const datas = (subs)?subs:this.currentCategory;
@@ -188,13 +192,48 @@ class CategorySetting {
         const _this = this
         class InputCategory extends React.Component {
             constructor() {
-              super();
-              
-              this.state = {
-                newCategoryName:"",
-                parentCategory:"Cat 1",
-                categorys: _this.currentCategory,
-              };
+                super();
+                
+                this.state = {
+                    newCategoryName:"",
+                    parentCategory:"Cat 1",
+                    categorys: _this.currentCategory,
+                };
+
+                if(_this.selectedCat != null){
+                    for (let i = 0; i < _this.selectedCat.length; i++) {
+                        const element = _this.selectedCat[i];
+                        let indexs = this.findCat(element)
+                        
+                        if(indexs.length){
+                            this.setChecked(_this.currentCategory,indexs,true)
+                        }
+                        
+                    }
+                }
+                
+            }
+
+            findCat = (search,subs = null) => {
+                let indexs = [];
+                const datas = (subs)?subs:this.currentCategory;
+                let htmls = '';
+                datas.map((cat, i) =>{
+                    if(cat.name == search){
+                        indexs.push(i)
+                        
+                    }
+        
+                    if(cat.subs.length){
+                        subIndexs += this.findCat(search,cat.subs)
+        
+                        indexs = indexs.concat(subIndexs)
+                    }
+                })
+        
+                return indexs;
+        
+                
             }
         
             searchable =(e)=> {
@@ -397,9 +436,12 @@ class TagSetting {
 
     renderHiddenElemen = () =>{
         let htmls = '';
-        { this.selectedTags.map((tag, i) => (
-            htmls += `<input type="hidden" name="tag[]" value="${tag}" />`
-        ))}
+        if(this.selectedTags != null){
+            { this.selectedTags.map((tag, i) => (
+                htmls += `<input type="hidden" name="tag[]" value="${tag}" />`
+            ))}
+        }
+        
         const cek = $("#list-input-setting").find("#tag-input")
         if(cek.length){
             cek.html(htmls)

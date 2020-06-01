@@ -12,7 +12,7 @@
                         </b>
                     </div>
                     <div class="float-right">
-                        <a href="{{ route('admin.post.create') }}" class="btn btn-primary">
+                        <a href="{{ route('admin.post.create') }}?lastID={{ $lastID }}" class="btn btn-primary">
                             Add Post
                         </a>
                     </div>

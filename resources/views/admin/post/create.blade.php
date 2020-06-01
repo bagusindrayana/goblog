@@ -5,9 +5,23 @@
 @push('styles')
 
     <link rel="stylesheet" href="{{asset('vendor/laraberg/css/laraberg.css')}}">
+
+    <style>
+        /* for mobile */
+        #laraberg__editor {
+            height: 60vh !important;
+        }
+
+        /* for desktop */
+        @media only screen and (min-width: 768px) {
+            #laraberg__editor {
+                height: auto !important;
+            }
+        }
+    </style>
   
 @endpush
-<form action="{{ route('admin.post.store') }}" class="form" method="POST">
+<form action="{{ route('admin.post.store') }}" class="form" method="POST" id="form">
     @csrf
     <div class="container">
         <div class="row justify-content-center">
@@ -15,7 +29,9 @@
                 <div class="card">
                     <div class="card-header">
                         <div class="float-left">
-                            <b>Add Post</b>
+                            <a class="btn btn-info text-white" name="status" type="button" value="Draft">
+                                Back To Dashboard
+                            </a>
                         </div>
                         <div class="float-right">
                             <button class="btn btn-light" name="status" type="submit" value="Draft">
@@ -32,11 +48,11 @@
                         
                         
                             <div class="form-group">
-                                <label for="title">Title</label>
+                                {{-- <label for="title">Title</label> --}}
                                 <input type="text" class="form-control" name="title" id="title" required placeholder="Title">
                             </div>
-                            <div class="form-group">
-                                <label for="content">Content</label>
+                            <div class="form-group" >
+                                {{-- <label for="content">Content</label> --}}
                                 <textarea id="content" name="content" hidden></textarea>
                                 <div style="display: none" id="list-input-setting">
                                 
@@ -47,7 +63,7 @@
                                 <button class="btn btn-light" name="status" type="submit" value="Draft">
                                     Save Draft
                                 </button>
-                                <button class="btn btn-success" name="status" value="Publish">
+                                <button class="btn btn-success" name="status" type="submit" value="Publish">
                                     Publish
                                 </button>
                             </div>
@@ -69,6 +85,12 @@
     <script>
         $(document).ready(function(){
             Laraberg.init('content',{laravelFilemanager: true});  
+
+           
+
+            // $(document).on('#form','click',function(e){
+                
+            // });
             
             string_to_slug = (str) => {
                 str = str.replace(/^\s+|\s+$/g, ''); // trim
@@ -108,10 +130,10 @@
             })
 
             setTimeout(function(){
-                const pm = new PermalinkSetting()
-                const ct = new CategorySetting({!! json_encode($categories) !!})
-                const tg = new TagSetting({!! json_encode($tags) !!})
-                const fi = new FeaturedImageSetting()
+                const pm = new PermalinkSetting(`{{ old("slug") }}`)
+                const ct = new CategorySetting({!! json_encode($categories) !!},{!! json_encode(old('category',[])) !!})
+                const tg = new TagSetting({!! json_encode($tags) !!},{!! json_encode(old('tags',[])) !!})
+                const fi = new FeaturedImageSetting(`{{ old("featured_image") }}`)
             },2000)
             
         })

@@ -21,7 +21,12 @@ class PostController extends Controller
 
         $s = request()->s ?? "";
         $datas = Post::where('title','LIKE','%'.$s.'%')->paginate(10);
-        return view('admin.post.index',compact('datas'));
+        $lastID = 1;
+        $ld = Post::orderBy('id','DESC')->withTrashed()->first();
+        if($ld){
+            $lastID = $ld->id+1;
+        }
+        return view('admin.post.index',compact('datas','lastID'));
     }
 
     public function makeSub($parents,$post = null)
@@ -47,6 +52,7 @@ class PostController extends Controller
     {   
         $cat = Category::whereNull('parrent_id')->get();
         $categories = $this->makeSub($cat);
+        $fullscreen = true;
        
         // foreach ($cat as $value) {
         //     $categories[] = [
@@ -56,7 +62,7 @@ class PostController extends Controller
         //     ];
         // }
         $tags = Tag::pluck('name');
-        return view('admin.post.create',compact('categories','tags'));
+        return view('admin.post.create',compact('categories','tags','fullscreen'));
     }
 
     /**

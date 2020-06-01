@@ -34,10 +34,16 @@ class Helper {
         }
     }
 
-    public static function postList($paginate = true,$limit = 5,$search = null)
+    public static function postList($paginate = true,$limit = 5,$search = null,$where = null)
     {   
         $s = request()->s ?? ($search ?? "");
-        $posts = Post::orderBy('created_at','DESC')->where('title','LIKE','%'.$s.'%');
+        $posts = Post::orderBy('created_at','DESC')->where(function($q)use($s){
+            $q->where('title','LIKE','%'.$s.'%')->orWhere('content','LIKE','%'.$s.'%');
+        });
+
+        if($where && is_array($where)){
+            $posts = $posts->where($where);
+        }
         
         if($paginate){
             return $posts->paginate($limit);

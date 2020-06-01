@@ -16,6 +16,8 @@
 
   <script src="{{ asset('js/app.js') }}"></script>
 
+  @stack('scripts')
+
  
   @stack('head')
 
@@ -74,7 +76,7 @@
         <div class="card my-4">
           <h5 class="card-header">Search</h5>
           <div class="card-body">
-            <form action="{{ url('/') }}" class="form">
+            <form action="" class="form">
               <div class="input-group">
                 <input type="text" class="form-control" placeholder="Search for..." name="s" value="{{ request()->s }}">
                 <span class="input-group-btn">

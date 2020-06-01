@@ -80,6 +80,7 @@
 
         <main class="py-4">
             <div class="container">
+                
                 <div class="row justifi-content-center">
                     <div class="col-md-12">
                         @if ($message = Session::get('success'))
@@ -102,17 +103,24 @@
                     </div>
                 </div>
                 <div class="row justify-content-center">
-                    <div class="col-md-2">
-                        <ul class="list-group">
-                            <li class="list-group-item"><a href="{{ route('admin.home') }}">Home</a></li>
-                            <li class="list-group-item"><a href="{{ route('admin.category.index') }}">Category</a></li>
-                            <li class="list-group-item"><a href="{{ route('admin.tag.index') }}">Tag</a></li>
-                            <li class="list-group-item"><a href="{{ route('admin.post.index') }}">Post</a></li>
-                        </ul>
-                    </div>
-                    <div class="col-md-10">
-                        @yield('content')
-                    </div>
+                    @if (@$fullscreen == true)
+                        <div class="col-md-12">
+                            @yield('content')
+                        </div>
+                    @else
+                        <div class="col-md-2">
+                            <ul class="list-group">
+                                <li class="list-group-item"><a href="{{ route('admin.home') }}">Home</a></li>
+                                <li class="list-group-item"><a href="{{ route('admin.category.index') }}">Category</a></li>
+                                <li class="list-group-item"><a href="{{ route('admin.tag.index') }}">Tag</a></li>
+                                <li class="list-group-item"><a href="{{ route('admin.post.index') }}">Post</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-md-10">
+                            @yield('content')
+                        </div>
+                    @endif
+                        
                 </div>
             </div>
             
