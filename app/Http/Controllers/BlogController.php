@@ -71,4 +71,15 @@ class BlogController extends Controller
         $subTitle = $year;
         return view('welcome',compact('posts','title','subTitle'));
     }
+
+    public function archivePostYearMonth($year,$month)
+    {
+        $posts = Helper::postList(true,5,request()->s,function ($w)use($year,$month)
+        {
+            $w->whereYear('created_at',$year)->whereMonth('created_at',$month);
+        });
+        $title = "Year/Month : ";
+        $subTitle = $year."/".$month;
+        return view('welcome',compact('posts','title','subTitle'));
+    }
 }
