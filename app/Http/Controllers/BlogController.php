@@ -59,4 +59,16 @@ class BlogController extends Controller
         return view('welcome',compact('posts','title','subTitle'));
 
     }
+
+    public function archivePostYear($year)
+    {   
+       
+        $posts = Helper::postList(true,5,request()->s,function ($w)use($year)
+        {
+            $w->whereYear('created_at',$year);
+        });
+        $title = "Year : ";
+        $subTitle = $year;
+        return view('welcome',compact('posts','title','subTitle'));
+    }
 }

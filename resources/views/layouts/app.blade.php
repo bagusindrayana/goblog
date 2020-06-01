@@ -92,6 +92,9 @@
   
         <!-- Tags Widget -->
         @include('layouts.includes.widget.tag')
+
+        <!-- Archives Widget -->
+        @include('layouts.includes.widget.archive')
       </div>
     </div>
     <!-- /.row -->

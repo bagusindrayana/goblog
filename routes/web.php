@@ -31,7 +31,13 @@ Route::group(['prefix'=>'admin','as'=>'admin.'], function(){
 
 
 Route::group(['as'=>'blog.'], function(){
-    Route::get('/{year}/{month}/{day}/{slug}','BlogController@singlePost');
+
+    Route::get('/archive/{year}','BlogController@archivePostYear')->name('archive.year');
+    Route::get('/archive/{year}/{month}','BlogController@archivePostYearMonth')->name('archive.year-month');
+    Route::get('/archive/{year}/{month}/{day}','BlogController@archivePostYearMonthDay')->name('archive.year-month-day');
+
+
+    Route::get('/{year}/{month}/{day}/{slug}','BlogController@singlePost')->name('single-post');
 
     Route::group(['as'=>'filter.'], function(){
         Route::get('/category/{slug}','BlogController@filterPostByCategory')->name('category');

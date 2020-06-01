@@ -20,7 +20,7 @@ class PostController extends Controller
     {   
 
         $s = request()->s ?? "";
-        $datas = Post::where('title','LIKE','%'.$s.'%')->paginate(10);
+        $datas = Post::where('title','LIKE','%'.$s.'%')->orderBy('created_at','DESC')->paginate(10);
         $lastID = 1;
         $ld = Post::orderBy('id','DESC')->withTrashed()->first();
         if($ld){
