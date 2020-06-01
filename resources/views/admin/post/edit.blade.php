@@ -5,65 +5,19 @@
 @push('styles')
 
     <link rel="stylesheet" href="{{asset('vendor/laraberg/css/laraberg.css')}}">
-  
-
+    
     <style>
-       
-        .input-tag {
-            background: white;
-            border: 1px solid #d6d6d6;
-            border-radius: 2px;
-            display: flex;
-            flex-wrap: wrap;
-            padding: 5px 5px 0;
+        /* for mobile */
+        #laraberg__editor {
+            height: 60vh !important;
         }
-        .input-tag input {
-            border: none;
-            width: 100%;
+
+        /* for desktop */
+        @media only screen and (min-width: 768px) {
+            #laraberg__editor {
+                height: auto !important;
+            }
         }
-        .input-tag__tags {
-            display: inline-flex;
-            flex-wrap: wrap;
-            margin: 0;
-            padding: 0;
-            width: 100%;
-        }
-        .input-tag__tags li {
-            align-items: center;
-            background: #85a3bf;
-            border-radius: 2px;
-            color: white;
-            display: flex;
-            font-weight: 300;
-            list-style: none;
-            margin-bottom: 5px;
-            margin-right: 5px;
-            padding: 5px 10px;
-        }
-        .input-tag__tags li button {
-            align-items: center;
-            appearance: none;
-            background: #333;
-            border: none;
-            border-radius: 50%;
-            color: white;
-            cursor: pointer;
-            display: inline-flex;
-            font-size: 12px;
-            height: 15px;
-            justify-content: center;
-            line-height: 0;
-            margin-left: 8px;
-            padding: 0;
-            transform: rotate(45deg);
-            width: 15px;
-        }
-        .input-tag__tags li.input-tag__tags__input {
-            background: none;
-            flex-grow: 1;
-            padding: 0;
-        }
-        
     </style>
 @endpush
 
@@ -126,14 +80,49 @@
     <script src="{{ asset('js/jsx.js') }}" type="text/babel"></script>
     <script>
         $(document).ready(function(){
-            Laraberg.init('content');  
+            Laraberg.init('content',{laravelFilemanager: true});  
+            string_to_slug = (str) => {
+                str = str.replace(/^\s+|\s+$/g, ''); // trim
+                str = str.toLowerCase();
+              
+                // remove accents, swap ñ for n, etc
+                var from = "àáäâèéëêìíïîòóöôùúüûñç·/_,:;";
+                var to   = "aaaaeeeeiiiioooouuuunc------";
+                for (var i=0, l=from.length ; i<l ; i++) {
+                    str = str.replace(new RegExp(from.charAt(i), 'g'), to.charAt(i));
+                }
             
-            setTimeout(function(){
-                const pm = new PermalinkSetting('{{ $post->slug }}')
-                const ct = new CategorySetting({!! json_encode($categories) !!})
-                const tg = new TagSetting({!! json_encode($tags) !!},{!! json_encode($post->Tags()->pluck('name')) !!})
-                const fi = new FeaturedImageSetting('{{ $post->featured_images }}')
+                str = str.replace(/[^a-z0-9 -]/g, '') // remove invalid chars
+                    .replace(/\s+/g, '-') // collapse whitespace and replace by -
+                    .replace(/-+/g, '-'); // collapse dashes
+            
+                return str;
+            }
+
+            $(document).on('change','#title',function(){
+                var input = document.getElementById("slug-input-setting");
+                if(input){
+                    var setValue = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, 'value').set;
+                    setValue.call(input, string_to_slug($(this).val()));
+                    var e = new Event('input', { bubbles: true });
+                    input.dispatchEvent(e);
+                } else {
+                    input = document.getElementById("slug-input");
+            
+                    var setValue = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, 'value').set;
+                    setValue.call(input.childNodes[0], string_to_slug($(this).val()));
+                    var e = new Event('input', { bubbles: true });
+                    input.dispatchEvent(e);
+                }
                 
+                
+            })
+
+            setTimeout(function(){
+                const pm = new PermalinkSetting(`{{ old("slug") }}`)
+                const ct = new CategorySetting({!! json_encode($categories) !!},{!! json_encode(old('category',[])) !!})
+                const tg = new TagSetting({!! json_encode($tags) !!},{!! json_encode(old('tags',[])) !!})
+                const fi = new FeaturedImageSetting(`{{ old("featured_image") }}`)
             },2000)
             
         })

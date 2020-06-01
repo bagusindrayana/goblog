@@ -85,13 +85,6 @@
     <script>
         $(document).ready(function(){
             Laraberg.init('content',{laravelFilemanager: true});  
-
-           
-
-            // $(document).on('#form','click',function(e){
-                
-            // });
-            
             string_to_slug = (str) => {
                 str = str.replace(/^\s+|\s+$/g, ''); // trim
                 str = str.toLowerCase();
