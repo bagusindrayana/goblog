@@ -50,7 +50,7 @@ class PostController extends Controller
      */
     public function create()
     {   
-        $cat = Category::whereNull('parrent_id')->get();
+        $cat = Category::whereNull('parent_id')->get();
         $categories = $this->makeSub($cat);
         $fullscreen = true;
        

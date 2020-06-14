@@ -68,7 +68,7 @@ class PermalinkSetting {
                 
                 var input = document.getElementById("title");
                 if(input){
-                    _this.currentUrlSlug = input.value
+                    _this.currentUrlSlug = this.string_to_slug(input.value)
                 }
                 _this.renderHiddenElemen()
                 this.state = { value: _this.currentUrlSlug };
@@ -352,28 +352,51 @@ class CategorySetting {
 
             submitNewCategory = () => {
                 const {newCategoryName,parentCategory} = this.state
-                fetch("/api/create/category")
+                fetch("/api/editor/new-category",{
+                    method: 'POST',
+                    headers: {
+                      'Accept': 'application/json',
+                      'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        name: newCategoryName,
+                        parent: parentCategory,
+                    })
+                  })
                 .then(res => res.json())
                 .then(
                     (result) => {
-                        console.log(result)
+                        _this.currentCategory = result
+                        this.setState({
+                            categorys : result
+                        })
+                        this.setState( { newCategoryName:'',parentCategory:'' } )
+                        //console.log(result)
                     },
                     (error) => {
-                        onsole.log(error)
+                        console.log(error)
                     }
                 )
-                console.log(newCategoryName)
+                
             }
             
           
             render() {
                 const { categorys } = this.state;
-                const options = this.dataSelectOption()
+                let options = [
+                    {
+                        label:"-- Dont Have --",value:null
+                    }
+                ]
+                const list = this.dataSelectOption()
+                options = options.concat(list)
+                
                 return (
                     <div className="input-category">
                         <input type="text" className="form-control mb-4" placeholder="Search..." onChange={this.searchable} />
-                        { categorys.map((category, i) =>{
-                          
+                        <div className="list-checkbox">
+                            { categorys.map((category, i) =>{
+                            
                             return (
                                 <div key={i}>
                                     <CheckboxControl
@@ -392,6 +415,7 @@ class CategorySetting {
                                 </div>
                             )
                         })}
+                        </div>
                         <ShowHide title="Add new category">
                             <TextControl
                             label="New Category Name"
@@ -566,7 +590,10 @@ class FeaturedImageSetting{
                                 <i className="fa fa-picture-o"></i> Choose
                                 </a>
                             </span>
-                            <input id="featured_image" className="form-control" type="text" value={_this.imgUrl}/>
+                            <input id="featured_image" className="form-control" type="text" onChange={(e) => {
+                                    console.log(e)
+                                }
+                            } value={_this.imgUrl}/>
                             <img id="holder" src={_this.imgUrl} onChange={(e) => {
                                     console.log(e)
                                 }

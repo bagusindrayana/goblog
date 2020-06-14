@@ -26,8 +26,9 @@ class CategoryController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create()
-    {
-        return view('admin.category.create');
+    {   
+        $cats = Category::pluck('name','id');
+        return view('admin.category.create',compact('cats'));
     }
 
     /**
@@ -41,11 +42,14 @@ class CategoryController extends Controller
         $request->validate([
             'name'=>'required|string|max:100|min:1'
         ]);
-
-        $category = Category::create([
+        $data = [
             'name'=>$request->name,
             'slug'=>Helper::makeSlug($request->name,Category::select('id'))
-        ]);
+        ];
+        if($request->parent_id){
+            $data['parent_id'] = $request->parent_id;
+        }
+        $category = Category::create($data);
 
         return redirect(route('admin.category.index'))->with(['success'=>"Add New Category with name ".$category->name]);
     }

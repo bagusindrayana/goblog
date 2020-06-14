@@ -61,25 +61,48 @@ class Helper
     }
 
     public static function archiveList()
-    {
-        $list = DB::select(DB::raw("SELECT YEAR(created_at) year,
-        MONTH(created_at) month,
-        MONTHNAME(created_at) month_name,
-        COUNT(*) post_count
-        FROM gb_posts
-        WHERE status = 'Publish'
-        AND deleted_at IS NULL
-        GROUP BY year, MONTH(created_at)
-        UNION ALL
-        SELECT YEAR(created_at) year,
-                13 month,
-                NULL month_name,
-                COUNT(*) post_count
-        FROM gb_posts
-        WHERE status = 'Publish'
-        AND deleted_at IS NULL
-        GROUP BY year
-        ORDER BY year DESC, month DESC"));
+    {   
+        $list = [];
+        if(env('DB_CONNECTION') == "mysql"){
+            $list = DB::select(DB::raw("SELECT YEAR(created_at) as year,
+            MONTH(created_at) as month,
+            MONTHNAME(created_at) month_name,
+            COUNT(*) post_count
+            FROM gb_posts
+            WHERE status = 'Publish'
+            AND deleted_at IS NULL
+            GROUP BY year, MONTH(created_at)
+            UNION ALL
+            SELECT YEAR(created_at) as year,
+                    13 as month,
+                    NULL month_name,
+                    COUNT(*) post_count
+            FROM gb_posts
+            WHERE status = 'Publish'
+            AND deleted_at IS NULL
+            GROUP BY year
+            ORDER BY year DESC, month DESC"));
+        } elseif(env('DB_CONNECTION') == "pgsql"){
+            $list = DB::select(DB::raw("SELECT  EXTRACT(year FROM created_at) as year,
+            EXTRACT(month FROM created_at) as month,
+            to_char(created_at, 'Month') as month_name,
+            COUNT(*) post_count
+            FROM gb_posts
+                WHERE status = 'Publish'
+                AND deleted_at IS NULL
+                GROUP BY year, EXTRACT(month FROM created_at),created_at
+                UNION ALL
+                SELECT EXTRACT(year FROM created_at) as year,
+                        13 as month,
+                        NULL month_name,
+                        COUNT(*) post_count
+                FROM gb_posts
+                WHERE status = 'Publish'
+                AND deleted_at IS NULL
+                GROUP BY year,created_at
+                ORDER BY year DESC, month DESC"));
+        }
+        
 
         return $list;
     }

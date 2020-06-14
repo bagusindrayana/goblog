@@ -24,7 +24,17 @@
 
         <div class="card-body">
             
-            
+
+                <div class="form-group">
+                    <label for="parent_id">Parent Category</label>
+                    <select name="parent_id" id="parent_id" class="form-control">
+                        <option value="">-- Dont Have --</option>
+                        @foreach ($cats as $id => $cat)
+                            
+                            <option value="{{ $id }}">{{ $cat }}</option>
+                        @endforeach
+                    </select>
+                </div>
                 <div class="form-group">
                     <label for="name">Name</label>
                     <input type="text" class="form-control" name="name" id="name" required placeholder="Name" value="{{ old('name') }}">

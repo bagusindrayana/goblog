@@ -20,6 +20,11 @@
                 height: auto !important;
             }
         }
+
+        .input-category .list-checkbox {
+            max-height: 200px;
+            overflow: scroll;
+        }
     </style>
   
 @endpush
