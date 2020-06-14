@@ -352,6 +352,16 @@ class CategorySetting {
 
             submitNewCategory = () => {
                 const {newCategoryName,parentCategory} = this.state
+                fetch("/api/create/category")
+                .then(res => res.json())
+                .then(
+                    (result) => {
+                        console.log(result)
+                    },
+                    (error) => {
+                        onsole.log(error)
+                    }
+                )
                 console.log(newCategoryName)
             }
             
