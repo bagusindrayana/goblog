@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Category;
 use App\Helpers\Helper;
+use App\Page;
 use App\Post;
 use App\Tag;
 use Illuminate\Http\Request;
@@ -81,5 +82,22 @@ class BlogController extends Controller
         $title = "Year/Month : ";
         $subTitle = $year."/".$month;
         return view('welcome',compact('posts','title','subTitle'));
+    }
+
+    public function openPage($slug)
+    {
+        $page = Page::where('slug',$slug)->first();
+        if($page){
+            if($page->type == "Default"){
+                return view("default-page",compact('page'));
+            }
+            else if($page->type == "Builder"){
+                return view("builder-page",compact('page'));
+            } else {
+                return abort(404);
+            }
+        } else {
+            return abort(404);
+        }
     }
 }

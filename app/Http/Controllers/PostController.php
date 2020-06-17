@@ -50,19 +50,11 @@ class PostController extends Controller
      */
     public function create()
     {   
-        $cat = Category::whereNull('parent_id')->get();
-        $categories = $this->makeSub($cat);
+        
         $fullscreen = true;
        
-        // foreach ($cat as $value) {
-        //     $categories[] = [
-        //         'name'=>$value->name,
-        //         'subs'=>$value->SubCategories,
-        //         'checked'=>false
-        //     ];
-        // }
-        $tags = Tag::pluck('name');
-        return view('admin.post.create',compact('categories','tags','fullscreen'));
+    
+        return view('admin.post.create',compact('fullscreen'));
     }
 
     /**
@@ -75,9 +67,9 @@ class PostController extends Controller
     {   
 
         $request->validate([
-            'title'=>'required|string|min:6|max:191',
-            'content'=>'required|string|min:6',
-            'slug'=>'required|string|min:1'
+            'title'=>'required|string|max:191',
+            'content'=>'required|string',
+            'slug'=>'required|string'
         ]);
         $post = Post::create([
             'title'=>$request->title,
@@ -164,9 +156,9 @@ class PostController extends Controller
     {   
        
         $request->validate([
-            'title'=>'required|string|min:6|max:191',
-            'content'=>'required|string|min:6',
-            'slug'=>'required|string|min:1'
+            'title'=>'required|string|max:191',
+            'content'=>'required|string',
+            'slug'=>'required|string'
         ]);
         $slug = $request->slug;
         if($request->slug != $post->slug){

@@ -44,15 +44,13 @@
               <span class="sr-only">(current)</span>
             </a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">About</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Services</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Contact</a>
-          </li>
+          @foreach (Helper::listPage() as $item)
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url($item->slug) }}">{{ $item->title }}</a>
+            </li>
+          @endforeach
+          
+          
         </ul>
       </div>
     </div>

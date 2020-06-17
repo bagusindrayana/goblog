@@ -3,6 +3,7 @@
 namespace App\Helpers;
 
 use App\Category;
+use App\Page;
 use App\Post;
 use App\Tag;
 use Illuminate\Support\Facades\DB;
@@ -105,5 +106,11 @@ class Helper
         
 
         return $list;
+    }
+
+    public static function listPage()
+    {
+        $page = Page::where('status','Publish')->orderBy('created_at')->get();
+        return $page;
     }
 }
