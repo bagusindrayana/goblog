@@ -50,11 +50,20 @@ class PostController extends Controller
      */
     public function create()
     {   
-        
+        $categories = [];
+        $cat = Category::all();
+        foreach ($cat as $value) {
+            $categories[] = [
+                'name'=>$value->name,
+                'subs'=>$value->SubCategories,
+                'checked'=>false
+            ];
+        }
+        $tags = Tag::pluck('name');
         $fullscreen = true;
        
     
-        return view('admin.post.create',compact('fullscreen'));
+        return view('admin.post.create',compact('categories','tags','fullscreen'));
     }
 
     /**
