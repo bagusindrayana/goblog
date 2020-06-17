@@ -20,9 +20,11 @@
         "resolve-url-loader": "^3.1.0",
         "sass": "^1.26.8",
         "sass-loader": "^8.0.0",
-        "vue-template-compiler": "^2.6.11"
+        "vue-template-compiler": "^2.6.11",
+        "websocket-extensions": "^0.1.4"
     },
     "dependencies": {
-        "reactjs-tag-input": "^2.0.15"
+        "reactjs-tag-input": "^2.0.15",
+        "yargs-parser": "^18.1.3"
     }
 }
