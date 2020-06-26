@@ -15,6 +15,9 @@ class TagController extends Controller
      */
     public function index()
     {   
+        if(!Helper::checkAccess("Tag","View")){
+            return redirect('/admin/home')->with(['error'=>"You dont have permission"]);
+        }
         $s = request()->s ?? "";
         $datas = Tag::where('name','LIKE','%'.$s.'%')->paginate(10);
         return view('admin.tag.index',compact('datas'));
@@ -26,7 +29,10 @@ class TagController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create()
-    {
+    {   
+        if(!Helper::checkAccess("Tag","Create")){
+            return redirect('/admin/home')->with(['error'=>"You dont have permission"]);
+        }
         return view('admin.tag.create');
     }
 
@@ -41,7 +47,10 @@ class TagController extends Controller
         $request->validate([
             'name'=>'required|string|max:100|min:1'
         ]);
-
+        
+        if(!Helper::checkAccess("Tag","Create")){
+            return redirect('/admin/home')->with(['error'=>"You dont have permission"]);
+        }
         $tag = Tag::create([
             'name'=>$request->name,
             'slug'=>Helper::makeSlug($request->name,Tag::select('id'))
@@ -69,6 +78,9 @@ class TagController extends Controller
      */
     public function edit(Tag $tag)
     {   
+        if(!Helper::checkAccess("Tag","Update")){
+            return redirect('/admin/home')->with(['error'=>"You dont have permission"]);
+        }
         $data = $tag;
         return view('admin.tag.edit',compact('data'));
     }
@@ -81,7 +93,10 @@ class TagController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Tag $tag)
-    {
+    {   
+        if(!Helper::checkAccess("Tag","Update")){
+            return redirect('/admin/home')->with(['error'=>"You dont have permission"]);
+        }
         $request->validate([
             'name'=>'required|string|max:100|min:1'
         ]);
@@ -103,6 +118,9 @@ class TagController extends Controller
      */
     public function destroy(Tag $tag)
     {   
+        if(!Helper::checkAccess("Tag","Delete")){
+            return redirect('/admin/home')->with(['error'=>"You dont have permission"]);
+        }
         $tag->delete();
         Helper::addUserLog("Delete tag with name : ".$tag->name);
         return redirect(route('admin.tag.index'))->with(['success'=>"Delete Tag with name ".$tag->name]);

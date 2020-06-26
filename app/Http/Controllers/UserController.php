@@ -17,6 +17,9 @@ class UserController extends Controller
      */
     public function index()
     {   
+        if(!Helper::checkAccess("User","View")){
+            return redirect('/admin/home')->with(['error'=>"You dont have permission"]);
+        }
         $s = request()->s ?? "";
         $datas = User::where('name','LIKE','%'.$s.'%')->paginate(10);
         return view('admin.user.index',compact('datas'));
@@ -29,6 +32,9 @@ class UserController extends Controller
      */
     public function create()
     {   
+        if(!Helper::checkAccess("User","Create")){
+            return redirect('/admin/home')->with(['error'=>"You dont have permission"]);
+        }
         $roles = Role::pluck('role_name','id');
         return view('admin.user.create',compact('roles'));
     }
@@ -40,7 +46,10 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
+    {   
+        if(!Helper::checkAccess("User","Create")){
+            return redirect('/admin/home')->with(['error'=>"You dont have permission"]);
+        }
         $request->validate([
             'name'=>'required|string|max:100',
             'email'=>'required|string|max:100|unique:users',
@@ -78,6 +87,9 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {   
+        if(!Helper::checkAccess("User","Update")){
+            return redirect('/admin/home')->with(['error'=>"You dont have permission"]);
+        }
         $data = $user;
         $roles = Role::pluck('role_name','id');
         return view('admin.user.edit',compact('data','roles'));
@@ -91,7 +103,10 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, User $user)
-    {
+    {   
+        if(!Helper::checkAccess("User","Update")){
+            return redirect('/admin/home')->with(['error'=>"You dont have permission"]);
+        }
         $request->validate([
             'name'=>'required|string|max:100|min:1'
         ]);
@@ -115,6 +130,9 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {   
+        if(!Helper::checkAccess("User","Update")){
+            return redirect('/admin/home')->with(['error'=>"You dont have permission"]);
+        }
         $user->delete();
         Helper::addUserLog("Delete user with name : ".$user->name);
         return redirect(route('admin.user.index'))->with(['success'=>"Delete User with name ".$user->name]);

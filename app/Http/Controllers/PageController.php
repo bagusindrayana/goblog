@@ -16,6 +16,9 @@ class PageController extends Controller
      */
     public function index()
     {   
+        if(!Helper::checkAccess("Page","View")){
+            return redirect('/admin/home')->with(['error'=>"You dont have permission"]);
+        }
         $s = request()->s ?? "";
         $datas = Page::where('title','LIKE','%'.$s.'%')->paginate(10);
         return view('admin.page.index',compact('datas'));
@@ -28,6 +31,9 @@ class PageController extends Controller
      */
     public function create()
     {   
+        if(!Helper::checkAccess("Page","Create")){
+            return redirect('/admin/home')->with(['error'=>"You dont have permission"]);
+        }
         $cats = Page::pluck('title','id');
         return view('admin.page.create',compact('cats'));
     }
@@ -39,7 +45,10 @@ class PageController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
+    {   
+        if(!Helper::checkAccess("Page","Create")){
+            return redirect('/admin/home')->with(['error'=>"You dont have permission"]);
+        }
         $request->validate([
             'title'=>'required|string|max:191',
             'content'=>'required|strin',
@@ -76,6 +85,9 @@ class PageController extends Controller
      */
     public function edit(Page $page)
     {   
+        if(!Helper::checkAccess("Page","Update")){
+            return redirect('/admin/home')->with(['error'=>"You dont have permission"]);
+        }
         $data = $page;
         return view('admin.page.edit',compact('data'));
     }
@@ -89,7 +101,9 @@ class PageController extends Controller
      */
     public function update(Request $request, Page $page)
     {   
-        
+        if(!Helper::checkAccess("Page","Update")){
+            return redirect('/admin/home')->with(['error'=>"You dont have permission"]);
+        }
         $request->validate([
             'title'=>'required|string|max:191',
             'content'=>'required|string',
@@ -120,6 +134,9 @@ class PageController extends Controller
      */
     public function destroy(Page $page)
     {   
+        if(!Helper::checkAccess("Page","Delete")){
+            return redirect('/admin/home')->with(['error'=>"You dont have permission"]);
+        }
         $page->delete();
         Helper::addUserLog("Delete page with title : ".$page->title);
         return redirect(route('admin.page.index'))->with(['success'=>"Delete Page with title ".$page->title]);

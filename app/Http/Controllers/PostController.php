@@ -79,7 +79,9 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {   
-
+        if(!Helper::checkAccess("Post","Create")){
+            return redirect('/admin/home')->with(['error'=>"You dont have permission"]);
+        }
         $request->validate([
             'title'=>'required|string|max:191',
             'content'=>'required|string',
@@ -146,7 +148,9 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {    
-      
+        if(!Helper::checkAccess("Post","Update")){
+            return redirect('/admin/home')->with(['error'=>"You dont have permission"]);
+        }
         $categories = [];
         $cat = Category::all();
         foreach ($cat as $value) {
@@ -170,7 +174,9 @@ class PostController extends Controller
      */
     public function update(Request $request, Post $post)
     {   
-       
+        if(!Helper::checkAccess("Post","Update")){
+            return redirect('/admin/home')->with(['error'=>"You dont have permission"]);
+        }
         $request->validate([
             'title'=>'required|string|max:191',
             'content'=>'required|string',
@@ -216,7 +222,10 @@ class PostController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function destroy(Post $post)
-    {
+    {   
+        if(!Helper::checkAccess("Post","Delete")){
+            return redirect('/admin/home')->with(['error'=>"You dont have permission"]);
+        }
         $post->Tags()->delete();
         $post->Categories()->delete();
         $post->delete();

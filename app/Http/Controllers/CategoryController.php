@@ -15,6 +15,9 @@ class CategoryController extends Controller
      */
     public function index()
     {   
+        if(!Helper::checkAccess("Category","View")){
+            return redirect('/admin/home')->with(['error'=>"You dont have permission"]);
+        }
         $s = request()->s ?? "";
         $datas = Category::where('name','LIKE','%'.$s.'%')->paginate(10);
         return view('admin.category.index',compact('datas'));
@@ -27,6 +30,9 @@ class CategoryController extends Controller
      */
     public function create()
     {   
+        if(!Helper::checkAccess("Category","Create")){
+            return redirect('/admin/home')->with(['error'=>"You dont have permission"]);
+        }
         $cats = Category::pluck('name','id');
         return view('admin.category.create',compact('cats'));
     }
@@ -38,7 +44,10 @@ class CategoryController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
+    {   
+        if(!Helper::checkAccess("Category","Create")){
+            return redirect('/admin/home')->with(['error'=>"You dont have permission"]);
+        }
         $request->validate([
             'name'=>'required|string|max:100|min:1'
         ]);
@@ -75,6 +84,9 @@ class CategoryController extends Controller
      */
     public function edit(Category $category)
     {   
+        if(!Helper::checkAccess("Category","Update")){
+            return redirect('/admin/home')->with(['error'=>"You dont have permission"]);
+        }
         $data = $category;
         return view('admin.category.edit',compact('data'));
     }
@@ -87,7 +99,10 @@ class CategoryController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Category $category)
-    {
+    {   
+        if(!Helper::checkAccess("Category","Update")){
+            return redirect('/admin/home')->with(['error'=>"You dont have permission"]);
+        }
         $request->validate([
             'name'=>'required|string|max:100|min:1'
         ]);
@@ -108,6 +123,9 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {   
+        if(!Helper::checkAccess("Category","Delete")){
+            return redirect('/admin/home')->with(['error'=>"You dont have permission"]);
+        }
         $category->delete();
         Helper::addUserLog("Delete category with name : ".$category->name);
         return redirect(route('admin.category.index'))->with(['success'=>"Delete Category with name ".$category->name]);

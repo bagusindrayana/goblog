@@ -69,31 +69,42 @@
                             ></a>
                             <div class="collapse" id="collapsePost" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="{{ route('admin.post.index') }}">Post</a>
-                                    <a class="nav-link" href="{{ route('admin.category.index') }}">Category</a>
-                                    <a class="nav-link" href="{{ route('admin.tag.index') }}">Tag</a>
+                                    @if (Helper::checkAccess("Post","View"))
+                                        <a class="nav-link" href="{{ route('admin.post.index') }}">Post</a>
+                                    @endif
+                                    @if (Helper::checkAccess("Category","View"))
+                                        <a class="nav-link" href="{{ route('admin.category.index') }}">Category</a>
+                                    @endif
+                                    @if (Helper::checkAccess("Tag","View"))
+                                        <a class="nav-link" href="{{ route('admin.tag.index') }}">Tag</a>
+                                    @endif
                                 </nav>
                             </div>
-                            <a class="nav-link" href="{{ route('admin.page.index') }}">
-                                <div class="sb-nav-link-icon"><i class="fas fa-file"></i></div>
-                                Page
-                            </a>
+                            @if (Helper::checkAccess("Page","View"))
+                                <a class="nav-link" href="{{ route('admin.page.index') }}">
+                                    <div class="sb-nav-link-icon"><i class="fas fa-file"></i></div>
+                                    Page
+                                </a>
+                            @endif
                             <a class="nav-link" href="{{ url('admin/media') }}">
                                 <div class="sb-nav-link-icon"><i class="fas fa-image"></i></div>
                                 Media
                             </a>
-                            <div class="sb-sidenav-menu-heading">Setting</div>
-                            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUser" aria-expanded="false" aria-controls="collapsePost"
-                                ><div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
-                                User Management
-                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div
-                            ></a>
-                            <div class="collapse" id="collapseUser" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
-                                <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="{{ route('admin.user.index') }}">User</a>
-                                    <a class="nav-link" href="{{ route('admin.role.index') }}">User Role</a>
-                                </nav>
-                            </div>
+                            @if (Helper::checkAccess("User","View"))
+                                <div class="sb-sidenav-menu-heading">Setting</div>
+                                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUser" aria-expanded="false" aria-controls="collapsePost"
+                                    ><div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
+                                    User Management
+                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div
+                                ></a>
+                                <div class="collapse" id="collapseUser" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
+                                    <nav class="sb-sidenav-menu-nested nav">
+                                        <a class="nav-link" href="{{ route('admin.user.index') }}">User</a>
+                                        <a class="nav-link" href="{{ route('admin.role.index') }}">User Role</a>
+                                    </nav>
+                                </div>
+                            @endif
+                            
                             
                         </div>
                     </div>
