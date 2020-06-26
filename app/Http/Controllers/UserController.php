@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\Helper;
+use App\Role;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -27,8 +28,9 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create()
-    {
-        return view('admin.user.create');
+    {   
+        $roles = Role::pluck('role_name','id');
+        return view('admin.user.create',compact('roles'));
     }
 
     /**
@@ -49,7 +51,10 @@ class UserController extends Controller
             'name'=>$request->name,
             'email'=>$request->email,
             'password'=>Hash::make($request->password),
+            'role_id'=>$request->role_id
         ]);
+
+        Helper::addUserLog("Add new user with name : ".$user->name);
 
         return redirect(route('admin.user.index'))->with(['success'=>"Add New User with name ".$user->name]);
     }
@@ -74,7 +79,8 @@ class UserController extends Controller
     public function edit(User $user)
     {   
         $data = $user;
-        return view('admin.user.edit',compact('data'));
+        $roles = Role::pluck('role_name','id');
+        return view('admin.user.edit',compact('data','roles'));
     }
 
     /**
@@ -93,7 +99,10 @@ class UserController extends Controller
         $user->update([
             'name'=>$request->name,
             'email'=>$request->email,
+            'role_id'=>$request->role_id
         ]);
+
+        Helper::addUserLog("Update user with name : ".$user->name);
 
         return redirect(route('admin.user.index'))->with(['success'=>"Update User with name ".$user->name]);
     }
@@ -107,6 +116,7 @@ class UserController extends Controller
     public function destroy(User $user)
     {   
         $user->delete();
+        Helper::addUserLog("Delete user with name : ".$user->name);
         return redirect(route('admin.user.index'))->with(['success'=>"Delete User with name ".$user->name]);
     }
 }

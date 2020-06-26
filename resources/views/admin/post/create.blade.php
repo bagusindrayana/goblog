@@ -93,6 +93,7 @@
     <script src="{{ asset('js/jsx.js') }}" type="text/babel"></script>
     <script>
         $(document).ready(function(){
+            
             Laraberg.init('content',{laravelFilemanager: true});  
             string_to_slug = (str) => {
                 str = str.replace(/^\s+|\s+$/g, ''); // trim

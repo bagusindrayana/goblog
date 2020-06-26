@@ -53,7 +53,7 @@ class PageController extends Controller
             'user_id'=>Auth::user()->id
         ]);
         
-
+        Helper::addUserLog("Add new page with title : ".$page->title);
         return redirect(route('admin.page.index'))->with(['success'=>"Add New Page with title ".$page->title]);
     }
 
@@ -107,6 +107,8 @@ class PageController extends Controller
             'status'=>$request->status
         ]);
 
+        Helper::addUserLog("Update page with title : ".$page->title);
+
         return redirect(route('admin.page.index'))->with(['success'=>"Update Page with title ".$page->title]);
     }
 
@@ -119,6 +121,7 @@ class PageController extends Controller
     public function destroy(Page $page)
     {   
         $page->delete();
+        Helper::addUserLog("Delete page with title : ".$page->title);
         return redirect(route('admin.page.index'))->with(['success'=>"Delete Page with title ".$page->title]);
     }
 
@@ -155,6 +158,7 @@ class PageController extends Controller
             'type'=>"Builder",
             'caption'=>$request->caption
         ]);
+        Helper::addUserLog("Add new page with title : ".$page->title);
         // $fp = fopen('web-builder.html', 'w');
         // fwrite($fp, $request['gjs-html']);
         // fclose($fp);
@@ -184,6 +188,7 @@ class PageController extends Controller
             'type'=>"Builder",
             'caption'=>$request->caption
         ]);
+        Helper::addUserLog("Update page with title : ".$page->title);
         // $fp = fopen('web-builder.html', 'w');
         // fwrite($fp, $request['gjs-html']);
         // fclose($fp);

@@ -19,6 +19,10 @@ class CreateCategoryablesTable extends Migration
             $table->unsignedBigInteger('categoryable_id');
             $table->string('categoryable_type',100);
             $table->timestamps();
+            $table->softDeletes();
+
+            $table->index('category_id');
+            $table->foreign('category_id')->references('id')->on('categories')->onDelete('RESTRICT')->onUpdate('RESTRICT');
         });
     }
 

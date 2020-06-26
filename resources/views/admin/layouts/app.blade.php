@@ -37,6 +37,7 @@
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
                         {{-- <a class="dropdown-item" href="#">Settings</a><a class="dropdown-item" href="#">Activity Log</a> --}}
                         {{-- <div class="dropdown-divider"></div> --}}
+                        <a href="{{ url('user-log') }}" class="dropdown-item">User Log</a>
                         <a class="dropdown-item" href="{{ route('admin.logout') }}"
                             onclick="event.preventDefault();
                                             document.getElementById('logout-form').submit();">
@@ -62,7 +63,7 @@
                             </a>
                             <div class="sb-sidenav-menu-heading">Content</div>
                             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePost" aria-expanded="false" aria-controls="collapsePost"
-                                ><div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                                ><div class="sb-nav-link-icon"><i class="fas fa-newspaper"></i></div>
                                 Post
                                 <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div
                             ></a>
@@ -77,11 +78,23 @@
                                 <div class="sb-nav-link-icon"><i class="fas fa-file"></i></div>
                                 Page
                             </a>
-                            <div class="sb-sidenav-menu-heading">Setting</div>
-                            <a class="nav-link" href="{{ route('admin.user.index') }}">
-                                <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
-                                User
+                            <a class="nav-link" href="{{ url('admin/media') }}">
+                                <div class="sb-nav-link-icon"><i class="fas fa-image"></i></div>
+                                Media
                             </a>
+                            <div class="sb-sidenav-menu-heading">Setting</div>
+                            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUser" aria-expanded="false" aria-controls="collapsePost"
+                                ><div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
+                                User Management
+                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div
+                            ></a>
+                            <div class="collapse" id="collapseUser" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
+                                <nav class="sb-sidenav-menu-nested nav">
+                                    <a class="nav-link" href="{{ route('admin.user.index') }}">User</a>
+                                    <a class="nav-link" href="{{ route('admin.role.index') }}">User Role</a>
+                                </nav>
+                            </div>
+                            
                         </div>
                     </div>
                     <div class="sb-sidenav-footer">
@@ -141,6 +154,9 @@
         <script src="{{ asset('js/app.js') }}" ></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/js/all.min.js" crossorigin="anonymous"></script>
         <script src="{{ asset('admin/js/scripts.js') }}"></script>
+        <script>
+            window.api_token = '{{ Auth::user()->api_token }}';
+        </script>
         @stack('scripts')
 
     </body>

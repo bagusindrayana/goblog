@@ -26,6 +26,7 @@ class ApiController extends Controller
         $category = Category::create($data);
         $cat = Category::whereNull('parent_id')->get();
         $categories = $this->makeSub($cat);
+        Helper::addUserLog("Add new category with name : ".$category->name);
         return $categories;
     }
     

@@ -357,6 +357,7 @@ class CategorySetting {
                     headers: {
                       'Accept': 'application/json',
                       'Content-Type': 'application/json',
+                      'Authorization':'Bearer '+window.api_token
                     },
                     body: JSON.stringify({
                         name: newCategoryName,
@@ -383,6 +384,7 @@ class CategorySetting {
           
             render() {
                 const { categorys } = this.state;
+                console.log(categorys)
                 let options = [
                     {
                         label:"-- Dont Have --",value:null

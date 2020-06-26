@@ -51,6 +51,8 @@ class CategoryController extends Controller
         }
         $category = Category::create($data);
 
+        Helper::addUserLog("Add new category with name : ".$category->name);
+
         return redirect(route('admin.category.index'))->with(['success'=>"Add New Category with name ".$category->name]);
     }
 
@@ -93,6 +95,7 @@ class CategoryController extends Controller
         $category->update([
             'name'=>$request->name
         ]);
+        Helper::addUserLog("Update category with name : ".$category->name);
 
         return redirect(route('admin.category.index'))->with(['success'=>"Update Category with name ".$category->name]);
     }
@@ -106,6 +109,7 @@ class CategoryController extends Controller
     public function destroy(Category $category)
     {   
         $category->delete();
+        Helper::addUserLog("Delete category with name : ".$category->name);
         return redirect(route('admin.category.index'))->with(['success'=>"Delete Category with name ".$category->name]);
     }
 }

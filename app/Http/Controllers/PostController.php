@@ -18,7 +18,9 @@ class PostController extends Controller
      */
     public function index()
     {   
-
+        if(!Helper::checkAccess("Post","View")){
+           return redirect('/home')->with(['error'=>"You dont have permission"]);
+        }
         $s = request()->s ?? "";
         $datas = Post::where('title','LIKE','%'.$s.'%')->orderBy('created_at','DESC')->paginate(10);
         $lastID = 1;
@@ -50,6 +52,9 @@ class PostController extends Controller
      */
     public function create()
     {   
+        if(!Helper::checkAccess("Post","Create")){
+            return redirect('/admin/home')->with(['error'=>"You dont have permission"]);
+        }
         $categories = [];
         $cat = Category::all();
         foreach ($cat as $value) {
@@ -115,6 +120,8 @@ class PostController extends Controller
             $category_id[] = $cek->id;
         }
         $post->Categories()->sync($category_id);
+
+        Helper::addUserLog("Add new post with title : ".$post->title);
         
         return redirect(route('admin.post.index'))->with(['success'=>"Add new post with title : ".$post->title]);
 
@@ -198,7 +205,7 @@ class PostController extends Controller
             $category_id[] = $d->id;
         }
         $post->Categories()->sync($category_id);
-        
+        Helper::addUserLog("Update post with title : ".$post->title);
         return redirect(route('admin.post.index'))->with(['success'=>"Update post with title : ".$post->title]);
     }
 
@@ -213,6 +220,7 @@ class PostController extends Controller
         $post->Tags()->delete();
         $post->Categories()->delete();
         $post->delete();
+        Helper::addUserLog("Delete post with title : ".$post->title);
         return redirect(route('admin.post.index'))->with(['success'=>"Delete post with title : ".$post->title]);
 
     }

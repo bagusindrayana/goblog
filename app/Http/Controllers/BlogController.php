@@ -13,6 +13,11 @@ use Illuminate\Support\Facades\DB;
 class BlogController extends Controller
 {   
 
+    public function __construct()
+    {
+        Helper::addVisitor();
+    }
+
     public function welcomePage(Request $request)
     {
         $posts = Helper::postList();

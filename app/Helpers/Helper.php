@@ -6,6 +6,10 @@ use App\Category;
 use App\Page;
 use App\Post;
 use App\Tag;
+use App\UserLog;
+use App\Visitor;
+use DateTime;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class Helper
@@ -113,4 +117,127 @@ class Helper
         $page = Page::where('status','Publish')->orderBy('created_at')->get();
         return $page;
     }
+
+    public static function getMyIP()
+	{
+		$ipaddress = '';
+		if (getenv('HTTP_CLIENT_IP'))
+			$ipaddress = getenv('HTTP_CLIENT_IP');
+		else if(getenv('HTTP_X_FORWARDED_FOR'))
+			$ipaddress = getenv('HTTP_X_FORWARDED_FOR');
+		else if(getenv('HTTP_X_FORWARDED'))
+			$ipaddress = getenv('HTTP_X_FORWARDED');
+		else if(getenv('HTTP_FORWARDED_FOR'))
+			$ipaddress = getenv('HTTP_FORWARDED_FOR');
+		else if(getenv('HTTP_FORWARDED'))
+		   $ipaddress = getenv('HTTP_FORWARDED');
+		else if(getenv('REMOTE_ADDR'))
+			$ipaddress = getenv('REMOTE_ADDR');
+		else
+			$ipaddress = 'UNKNOWN';
+		return $ipaddress;
+	}
+
+    public static function getIpDetail($ip)
+    {
+        $ch = curl_init(); 
+        curl_setopt($ch, CURLOPT_URL, "http://ipinfo.io/{$ip}/json"); 
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); 
+        $output = curl_exec($ch); 
+        return [
+            'ip'=>$ip,
+            'ip_detail'=>$output
+        ];
+    }
+
+    public static function addVisitor($link = null,$ip = null)
+    {
+        if($link == null){
+            $link = url()->current();
+        }
+
+        if($ip == null){
+            $ip = Helper::getMyIP();
+        }
+
+        $cekVisitToday = Visitor::where(['link'=>$link,'ip'=>$ip])->whereDate('created_at',date('Y-m-d'))->first();
+
+        if(!$cekVisitToday){
+            Visitor::create([
+                'link'=>$link,
+                'ip'=>$ip,
+                'ip_detail'=>Helper::getIpDetail($ip)['ip_detail']
+            ]);
+        }
+        
+        
+    }
+
+    public static function addUserLog($description,$ip = null)
+    {
+        
+        if($ip == null){
+            $ip = Helper::getMyIP();
+        }
+        
+
+        UserLog::create([
+            'description'=>$description,
+            'user_id'=>Auth::user()->id,
+            'ip'=>$ip,
+            'ip_detail'=>Helper::getIpDetail($ip)['ip_detail']
+        ]);
+        
+    }
+
+    public static function checkAccess($access,$action)
+    {
+        $cek = Auth::user()->role->whereHas('access',function($w)use($access,$action){
+            $w->where("accesses.access_name",$access)->where('accesses.access_action',$action);
+        })->first();
+        
+        if(!$cek){
+            return false;
+        }
+
+        return true;
+        
+
+    }
+
+    public static function getDataByDay($dayBefore)
+    {
+    	$date = new DateTime(date("Y-m-d"));
+        $date->modify('-'.$dayBefore.' day');
+		$weekOfdays = array();
+        
+
+		for($i=0; $i < $dayBefore ; $i++){
+		    $date->modify('+1 day');
+		    $weekOfdays[] = [
+		    	'tanggal'=>$date->format('Y-m-d'),
+				'data'=>Visitor::whereDate('created_at',$date->format('Y-m-d'))->count()
+		    ];
+		}
+
+		return $weekOfdays;
+    }
+    
+    public static function getDataByMonth($monthBefore)
+    {
+    	$date = new DateTime(date("Y-m-d"));
+        $date->modify('-'.$monthBefore.' month');
+		$weekOfdays = array();
+        
+
+		for($i=0; $i < $monthBefore ; $i++){
+		    $date->modify('+1 month');
+		    $weekOfdays[] = [
+		    	'tanggal'=>$date->format('F,Y'),
+				'data'=>Visitor::whereDate('created_at',$date->format('Y-m-d'))->count()
+		    ];
+		}
+
+		return $weekOfdays;
+	}
 }

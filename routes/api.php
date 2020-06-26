@@ -18,4 +18,4 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('/editor/new-category','ApiController@newCategory');
+Route::post('/editor/new-category','ApiController@newCategory')->middleware('auth:api');

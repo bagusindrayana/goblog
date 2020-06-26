@@ -46,7 +46,7 @@ class TagController extends Controller
             'name'=>$request->name,
             'slug'=>Helper::makeSlug($request->name,Tag::select('id'))
         ]);
-
+        Helper::addUserLog("Add new tag with name : ".$tag->name);
         return redirect(route('admin.tag.index'))->with(['success'=>"Add New Tag with name ".$tag->name]);
     }
 
@@ -90,6 +90,8 @@ class TagController extends Controller
             'name'=>$request->name
         ]);
 
+        Helper::addUserLog("Update tag with name : ".$tag->name);
+
         return redirect(route('admin.tag.index'))->with(['success'=>"Update Tag with name ".$tag->name]);
     }
 
@@ -102,6 +104,7 @@ class TagController extends Controller
     public function destroy(Tag $tag)
     {   
         $tag->delete();
+        Helper::addUserLog("Delete tag with name : ".$tag->name);
         return redirect(route('admin.tag.index'))->with(['success'=>"Delete Tag with name ".$tag->name]);
     }
 }

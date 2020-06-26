@@ -37,6 +37,16 @@
                     <input type="email" class="form-control" name="email" id="email" required placeholder="Email" value="{{ old('email',@$data->email) }}">
                 </div>
 
+                <div class="form-group">
+                    <label for="role_id">Role</label>
+                    <select name="role_id" id="role_id" class="form-control">
+                        @foreach ($roles as $id => $role)
+                            <option value="{{ $id }}" @if ($id == $data->role_id)
+                                selected
+                            @endif>{{ $role }}</option>
+                        @endforeach
+                    </select>
+                </div>
               
 
                 <div class="form-group">
