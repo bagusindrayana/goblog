@@ -173,7 +173,8 @@ class PageController extends Controller
             'slug'=>Helper::makeSlug($request->title,Page::select('id')),
             'status'=>$request->status,
             'type'=>"Builder",
-            'caption'=>$request->caption
+            'caption'=>$request->caption,
+            'user_id'=>Auth::user()->id
         ]);
         Helper::addUserLog("Add new page with title : ".$page->title);
         // $fp = fopen('web-builder.html', 'w');
