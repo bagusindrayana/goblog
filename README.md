@@ -1,9 +1,11 @@
 ## **GOBLOG**
 
 Simple Blog System With Laravel
+
 Fitur
 - Gutenberg Editor like Wordpress
 - Page Builder
+- Menu Manager
 
 ![enter image description here](https://i.ibb.co/TcJw9ft/Fire-Shot-Capture-129-Goblog-goblog-dev-com.png)
 
@@ -24,11 +26,18 @@ Fitur
   9. jalankan perintah `php artisan db:seed` 
   10. dan jalankan `php artisan serve` lalu buka [http://127.0.0.1:8000/](http://127.0.0.1:8000/) di browser
 
+link login `/admin/login`
+
+email : admin@email.com
+
+password : admin4321
+
 Library pihak ketiga yang di gunakan
 - Laraberg - Wordpress Gutenberg Editor [https://github.com/VanOns/laraberg](https://github.com/VanOns/laraberg)
 - GrapeJs - Page Builder [http://grapesjs.com/](http://grapesjs.com/)
 - Bootstrap 4 Block For GrapeJs [https://github.com/kaoz70/grapesjs-blocks-bootstrap4](https://github.com/kaoz70/grapesjs-blocks-bootstrap4)
 - Laravel Filemanager [https://github.com/UniSharp/laravel-filemanager](https://github.com/UniSharp/laravel-filemanager)
 - Disqus - Comment System [https://disqus.com/](https://disqus.com/)
+- WMENU Builder wordpres menu builder for laravel [https://github.com/harimayco/wmenu-builder](https://github.com/harimayco/wmenu-builder)
 
 ***sistem ini belum final jadi setiap ada perubahan database harus menjalankan migration dari awal lagi dengan `php artisan migrate:fresh`***
