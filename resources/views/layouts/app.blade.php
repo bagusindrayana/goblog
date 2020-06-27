@@ -40,15 +40,28 @@
       <div class="collapse navbar-collapse" id="navbarResponsive">
         <ul class="navbar-nav ml-auto">
           <li class="nav-item active">
-            <a class="nav-link" href="{{ url('/') }}">Home
-              <span class="sr-only">(current)</span>
+            <a class="nav-link {!! Helper::active_class("/",'active') !!}" href="{{ url('/') }}">Home
+              
             </a>
           </li>
-          @foreach (Helper::listPage() as $item)
-            <li class="nav-item">
-              <a class="nav-link" href="{{ url($item->slug) }}">{{ $item->title }}</a>
-            </li>
-          @endforeach
+          @php
+              $public_menu = Helper::listMenu();
+          @endphp
+          @if($public_menu)
+       
+              @foreach($public_menu as $menu)
+              <li class="nav-item {!! Helper::active_class($menu['link'],'active') !!} @if($menu['child']) dropdown @endif">
+              <a  class="nav-link {!! Helper::active_class($menu['link'],'active') !!} @if($menu['child']) dropdown-toggle @endif" @if($menu['child']) role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" @endif id="menu{{ $menu['id'] }}" href="{{ $menu['link'] }}" title="">{{ $menu['label'] }}</a>
+                  @if( $menu['child'] )
+                    <ul class="dropdown-menu" aria-labelledby="menu{{ $menu['id'] }}">
+                        @foreach( $menu['child'] as $child )
+                            <a href="{{ $child['link'] }}"  title="" class="dropdown-item {!! Helper::active_class($child['link'],'active') !!}">{{ $child['label'] }}</a>
+                        @endforeach
+                    </ul><!-- /.sub-menu -->
+                  @endif
+              </li>
+              @endforeach
+          @endif
           
           
         </ul>

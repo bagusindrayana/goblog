@@ -5,10 +5,13 @@ namespace App\Helpers;
 use App\Category;
 use App\Page;
 use App\Post;
+use App\Setting;
 use App\Tag;
 use App\UserLog;
 use App\Visitor;
 use DateTime;
+use Harimayco\Menu\Facades\Menu;
+use Harimayco\Menu\Models\Menus;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -116,6 +119,18 @@ class Helper
     {
         $page = Page::where('status','Publish')->orderBy('created_at')->get();
         return $page;
+    }
+
+    public static function listMenu(){
+        $setting = Setting::where('setting_name','main_menu')->first();
+        if($setting){
+            $menus = Menus::find($setting->id)->items->toArray();
+            
+            return $menus;
+        }
+
+        return null;
+        
     }
 
     public static function getMyIP()
@@ -239,5 +254,12 @@ class Helper
 		}
 
 		return $weekOfdays;
-	}
+    }
+    
+    public static function active_class($url,$class)
+    {
+        if (\Request::is($url) || \Request::is($url.'/*')) { 
+            return $class;
+        }
+    }
 }

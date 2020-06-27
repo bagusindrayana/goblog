@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1fee5ae83025fba8a2136698c53b3bf4",
+    "content-hash": "1a05f31f4dc3104564d53679318921c0",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -808,6 +808,62 @@
                 "url"
             ],
             "time": "2019-07-01T23:21:34+00:00"
+        },
+        {
+            "name": "harimayco/laravel-menu",
+            "version": "1.4.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/harimayco/wmenu-builder.git",
+                "reference": "1e7baee3156436d59a4772020f6e6cdc0dd195e3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/harimayco/wmenu-builder/zipball/1e7baee3156436d59a4772020f6e6cdc0dd195e3",
+                "reference": "1e7baee3156436d59a4772020f6e6cdc0dd195e3",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "5.* || 6.* || 7.*",
+                "php": ">=7.2"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Harimayco\\Menu\\MenuServiceProvider"
+                    ],
+                    "aliases": {
+                        "Menu": "Harimayco\\Menu\\Facades\\Menu"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Harimayco\\Menu\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "Rendy Harimayco",
+                    "email": "rendyharimayco@gmail.com",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Cristian Garcia",
+                    "email": "informacion@cristiangarcia.co",
+                    "role": "Original Developer"
+                }
+            ],
+            "description": "drag and drop menu generator like wordpress for laravel 5",
+            "keywords": [
+                "builder",
+                "laravel",
+                "menu",
+                "wordpress"
+            ],
+            "time": "2020-03-14T14:11:39+00:00"
         },
         {
             "name": "intervention/image",
