@@ -86,6 +86,10 @@
                                     Page
                                 </a>
                             @endif
+                            <a class="nav-link" href="{{ route('admin.page.index') }}">
+                                <div class="sb-nav-link-icon"><i class="fas fa-file"></i></div>
+                                Menu
+                            </a>
                             <a class="nav-link" href="{{ url('admin/media') }}">
                                 <div class="sb-nav-link-icon"><i class="fas fa-image"></i></div>
                                 Media
